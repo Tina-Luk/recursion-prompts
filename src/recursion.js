@@ -145,42 +145,111 @@ var palindrome = function(string) {
 // modulo(17,5) // 2
 // modulo(22,6) // 4
 var modulo = function(x, y) {
+    if (y === 0) {
+        return NaN;
+    } 
+    if (x < 0) {
+      return -modulo(-x , y)
+    }
+    if (y < 0) {
+      return modulo(x, -y);
+    }
+    if (x < y) {
+      return x;
+    }
+    return modulo(x - y, y);
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
 var multiply = function(x, y) {
+    if (x === 0 || y === 0) {
+      return 0;
+    } 
+    if (x < 0 && y < 0) {
+      return -x + multiply(x, y+1)
+    }
+    if (y < 0) {
+      return -x + multiply(x, y+1)
+    }
+    return x + multiply(x, y-1);
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods to arrive at an approximate quotient (ignore decimal endings).
 var divide = function(x, y) {
-};
-
+    if (y === 0) {
+      return NaN;
+    } else if (x < 0 && y < 0) {
+      if (x > y) {
+        return 0;
+      }
+      return 1 + divide(x+y, y);
+    }
+    if (x <= 0) {
+      if (x > -y) {
+        return 0;
+      }
+      return -1 + divide(x+y, y)
+    }
+    if (x >= 0){
+      if (x < y) {
+        return 0;
+      }
+      return 1 + divide(x-y, y);
+    }
+  };
 // 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
 // integers is the greatest integer that divides both x and y with no remainder.
 // gcd(4,36); // 4
 // http://www.cse.wustl.edu/~kjg/cse131/Notes/Recursion/recursion.html
 // https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/the-euclidean-algorithm
 var gcd = function(x, y) {
+    if (x < 0 || y < 0) {
+        return null;
+    }
 };
 
 // 15. Write a function that compares each character of two strings and returns true if
 // both are identical.
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
+
 var compareStr = function(str1, str2) {
-};
+    let longer;
+    if (str1.length > str2.length) {
+      longer = str1;
+    } else {
+      longer = str2;
+    }
+    if (longer.length === 0) {
+      return true;
+    }
+    if (str1[0] !== str2[0]) {
+      return false;
+    }
+    return compareStr(str1.slice(1), str2.slice(1));
+  };
 
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
-};
+    if (str.length === 0) {
+      return [];
+    } else {
+      console.log(str[0]);
+      return [(str[0])].concat(createArray(str.slice(1)));
+    }
+  };
 
 // 17. Reverse the order of an array
 var reverseArr = function(array) {
-};
-
+    if (array.length === 0) {
+      return [];
+    }
+    let newArray = array.pop();
+    return [newArray].concat(reverseArr(array));
+  };
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
