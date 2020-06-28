@@ -201,12 +201,12 @@ var divide = function(x, y) {
 // http://www.cse.wustl.edu/~kjg/cse131/Notes/Recursion/recursion.html
 // https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/the-euclidean-algorithm
 var gcd = function(x, y) {
-    if (x < 0 || y < 0) {
-        return null;
-    }
-    if (x === y) return x;
-    if (x < y) return gcd(x, y-x);
-    if (x > y) return gcd(x-y, y);
+  if (x <= 0 || y <= 0) {
+    return null;
+  }
+  if (x === y) return x;
+  if (x > y) return gcd(x-y, y);
+  if (x < y) return gcd(x, y-x);
 };
 
 // 15. Write a function that compares each character of two strings and returns true if
@@ -216,16 +216,14 @@ var gcd = function(x, y) {
 
 var compareStr = function(str1, str2) {
   if (str1.length === 0 && str2.length === 0) return true;
-  if (str1[0] !== str2[0]) return false;
+  if (str1.toLowerCase()[0] !== str2.toLowerCase()[0]) return false;
   return compareStr(str1.slice(1), str2.slice(1));
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
-  if (str.length === 0) {
-    return [];
-  } 
+  if (str.length === 0) return [];
   return [str[0]].concat(createArray(str.slice(1)));
 };
 
@@ -295,7 +293,7 @@ var countKeysInObj = function(obj, key) {
   for (let letter in obj) {
     if (letter === key) {
       count ++;
-    } else if (typeof obj[letter] === 'object') {
+    } else if (typeof obj[letter] === "object") {
       count += countKeysInObj(obj[letter], key);
     }
   }
@@ -310,8 +308,8 @@ var countValuesInObj = function(obj, value) {
   let count = 0;
   for (let letter in obj) {
     if (obj[letter] === value) {
-      count++;
-    } else if (typeof obj[letter] === 'object') {
+      count ++;
+    } else if (typeof obj[letter] == "object") {
       count += countValuesInObj(obj[letter], value);
     }
   }
@@ -323,9 +321,10 @@ var countValuesInObj = function(obj, value) {
 var replaceKeysInObj = function(obj, oldKey, newKey) {
   for (let key in obj) {
     if (key === oldKey) {
-      obj[newKey] = obj[oldKey];
+      obj[newKey] = obj[key];
       delete obj[oldKey];
-    } else if (typeof obj[key] === 'object') {
+    }
+    if (typeof obj[key] === "object") {
       replaceKeysInObj(obj[key], oldKey, newKey)
     }
   }
@@ -338,13 +337,10 @@ var replaceKeysInObj = function(obj, oldKey, newKey) {
 // fibonacci(5); // [0,1,1,2,3,5]
 // Note: The 0 is not counted.
 var fibonacci = function(n) {
-  if (n <= 0) {
-    return null;
-  } else if (n === 1) {
-    return [0, 1];
-  }
-  let array = fibonacci(n-1); 
-  return [...array, array[n - 1] + array[n - 2]];
+  if (n <= 0) return null;
+  if (n === 1) return [0, 1];
+  let array = fibonacci(n-1);
+  return [...array, array[n-2] + array[n-1]];
 };
 
 // 26. Return the Fibonacci number located at index n of the Fibonacci sequence.
@@ -353,33 +349,25 @@ var fibonacci = function(n) {
 // nthFibo(7); // 13
 // nthFibo(3); // 2
 var nthFibo = function(n) {
-  if (n < 0) {
-    return null;
-  } else if (n === 0) {
-    return 0;
-  } else if (n === 1) {
-    return 1;
-  }
-  return nthFibo(n-1) + nthFibo(n-2);
+  if (n < 0) return null;
+  if (n === 0) return 0;
+  if (n === 1) return 1;
+  return nthFibo(n-2) + nthFibo(n-1);
 };
 
 // 27. Given an array of words, return a new array containing each word capitalized.
 // var words = ['i', 'am', 'learning', 'recursion'];
 // capitalizedWords(words); // ['I', 'AM', 'LEARNING', 'RECURSION']
 var capitalizeWords = function(array) {
-  if (array.length === 0) {
-    return [];
-  }
+  if (array.length === 0) return [];
   return [array[0].toUpperCase()].concat(capitalizeWords(array.slice(1)));
 };
 
 // 28. Given an array of strings, capitalize the first letter of each index.
 // capitalizeFirst(['car','poop','banana']); // ['Car','Poop','Banana']
 var capitalizeFirst = function(array) {
-  if (array.length === 0) {
-    return [];
-  }
-  return [array[0].charAt(0).toUpperCase() + array[0].slice(1)].concat(capitalizeFirst(array.slice(1)));
+  if (array.length === 0) return [];
+  return [array[0][0].toUpperCase() + array[0].slice(1)].concat(capitalizeFirst(array.slice(1)))
 };
 
 // 29. Return the sum of all even numbers in an object containing nested objects.
@@ -393,12 +381,9 @@ var capitalizeFirst = function(array) {
 // nestedEvenSum(obj1); // 10
 var nestedEvenSum = function(obj) {
   let evensSum = 0;
-  for (let key in obj) {
-    if (obj[key] % 2 === 0) {
-      evensSum += obj[key];
-    } else if (typeof obj[key] === 'object') {
-      evensSum += nestedEvenSum(obj[key])
-    }
+  for (let letter in obj) {
+    if (obj[letter] % 2 === 0) evensSum += obj[letter];
+    if (typeof obj[letter] === "object") evensSum += nestedEvenSum(obj[letter]);
   }
   return evensSum;
 };
@@ -408,9 +393,10 @@ var nestedEvenSum = function(obj) {
 var flatten = function(array) {
   let result = [];
   for (let i = 0; i < array.length; i++) {
+    console.log(result, array[i]);
     if (Array.isArray(array[i])) {
       result.push(...flatten(array[i]));
-    } else {
+    } else { 
       result.push(array[i]);
     }
   }
@@ -420,15 +406,13 @@ var flatten = function(array) {
 // 31. Given a string, return an object containing tallies of each letter.
 // letterTally('potato'); // {p:1, o:2, t:2, a:1}
 var letterTally = function(str, obj = {}) {
-  if (str.length === 0) {
-    return obj;
-  } else if (obj[str[0]] === undefined) {
+  if (str.length === 0) return obj;
+  if (obj[str[0]] === undefined) {
     obj[str[0]] = 1;
   } else {
     obj[str[0]] ++;
   }
-  letterTally(str.slice(1), obj);
-  return obj;
+  return letterTally(str.slice(1), obj);
 };
 
 // 32. Eliminate consecutive duplicates in a list. If the list contains repeated
@@ -437,26 +421,39 @@ var letterTally = function(str, obj = {}) {
 // compress([1,2,2,3,4,4,5,5,5]) // [1,2,3,4,5]
 // compress([1,2,2,3,4,4,2,5,5,5,4,4]) // [1,2,3,4,2,5,4]
 var compress = function(list) {
-  if (list.length === 0) {
-    return [];
+  if (list.length === 0) return [];
+  let [head, ...rest] = list;
+  let result = compress(rest);
+  if (head === result[0]) {
+    return result;
+  } else {
+    return [head, ...result];
   }
-  let result = compress(list.slice(1));
-  if (list[0] !== result[0]) {
-    result.unshift(list[0]);
-  }
-  return result;
 };
 
 // 33. Augment every element in a list with a new value where each element is an array
 // itself.
-// augmentElements([[],[3],[7]], 5); // [[5],[3,5],[7,5]]
+// console.log(augmentElements([[],[3],[7]], 5)); // [[5],[3,5],[7,5]]
 var augmentElements = function(array, aug) {
+  if (array.length === 0) return [];
+  let result = augmentElements(array.slice(1), aug);
+  array[0].push(aug);
+  result.unshift(array[0]);
+  return result
 };
 
 // 34. Reduce a series of zeroes to a single 0.
 // minimizeZeroes([2,0,0,0,1,4]) // [2,0,1,4]
 // minimizeZeroes([2,0,0,0,1,0,0,4]) // [2,0,1,0,4]
 var minimizeZeroes = function(array) {
+  if (array.length === 0) return [];
+  let result = minimizeZeroes(array.slice(1));
+  if (array[0] === 0 && array[1] === 0) {
+    array.unshift();
+  } else {
+    result.unshift(array[0]);
+  }
+  return result;
 };
 
 // 35. Alternate the numbers in an array between positive and negative regardless of
@@ -464,12 +461,39 @@ var minimizeZeroes = function(array) {
 // alternateSign([2,7,8,3,1,4]) // [2,-7,8,-3,1,-4]
 // alternateSign([-2,-7,8,3,-1,4]) // [2,-7,8,-3,1,-4]
 var alternateSign = function(array) {
+  if (array.length === 0) return [];
+  let result = alternateSign(array.slice(0, array.length - 1));
+  let index = array.length - 1;
+  if (index % 2 === 1) {
+    if (array[index] > 0) {
+      array[index] = -array[index];
+    }
+  } else {
+    if (array[index] < 0) {
+      array[index] = -array[index];
+    }
+  }
+  result.push(array[index]);
+  return result;
 };
 
 // 36. Given a string, return a string with digits converted to their word equivalent.
 // Assume all numbers are single digits (less than 10).
 // numToText("I have 5 dogs and 6 ponies"); // "I have five dogs and six ponies"
 var numToText = function(str) {
+  if (str.length === 0) return '';
+  let tempStr = numToText(str.slice(0, str.length - 1));
+  let replace = str[str.length - 1];
+  if (replace === '1') replace = 'one';
+  if (replace === '2') replace = 'two';
+  if (replace === '3') replace = 'three';
+  if (replace === '4') replace = 'four';
+  if (replace === '5') replace = 'five';
+  if (replace === '6') replace = 'six';
+  if (replace === '7') replace = 'seven';
+  if (replace === '8') replace = 'eight';
+  if (replace === '9') replace = 'nine';
+  return tempStr + replace;
 };
 
 
